@@ -1,5 +1,5 @@
 import { Card, CardContent, Typography, Box } from '@mui/material';
-import { Notice } from '../types';
+import type { Notice } from '../types';
 import { format } from 'date-fns';
 
 interface NoticeItemProps {

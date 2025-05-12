@@ -1,6 +1,6 @@
 import { Box, Typography, Container } from '@mui/material';
 import NoticeItem from './NoticeItem';
-import { Notice } from '../types';
+import type { Notice } from '../types';
 
 const SAMPLE_NOTICES: Notice[] = [
   {
