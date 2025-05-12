@@ -1,37 +1,60 @@
-import { Box, Typography, Container } from '@mui/material';
-import NoticeItem from './NoticeItem';
-import type { Notice } from '../types';
+import React, { useState } from 'react';
+import { Box, Button, TextField, Typography, List, ListItem } from '@mui/material';
 
-const SAMPLE_NOTICES: Notice[] = [
-  {
-    id: 1,
-    title: "Welcome to Prospective Design",
-    content: "Welcome to our new employee dashboard. Here you'll find important company announcements and updates.",
-    date: new Date().toISOString(),
-    author: "Management"
-  },
-  {
-    id: 2,
-    title: "Office Hours Update",
-    content: "Starting next week, office hours will be 9 AM to 6 PM.",
-    date: new Date().toISOString(),
-    author: "HR Department"
-  }
-];
+export interface User {
+  id: string;
+  name: string;
+  role: 'ADMIN' | 'EMPLOYEE' | 'HR' | 'Management';
+}
 
-const NoticeBoard = () => {
+interface NoticeBoardProps {
+  user: User;
+  notices: string[];
+  onAddNotice: (notice: string) => void;
+}
+
+export default function NoticeBoard({ user, notices, onAddNotice }: NoticeBoardProps) {
+  const [newNotice, setNewNotice] = useState('');
+
+  const canPostNotices = user.role === 'HR' || user.role === 'Management';
+
+  const handlePostNotice = () => {
+    if (newNotice.trim()) {
+      onAddNotice(newNotice);
+      setNewNotice('');
+    }
+  };
+
   return (
-    <Container maxWidth="md" sx={{ mt: 4 }}>
-      <Typography variant="h4" component="h1" sx={{ mb: 4 }}>
+    <Box>
+      <Typography variant="h4" gutterBottom>
         Notice Board
       </Typography>
-      <Box>
-        {SAMPLE_NOTICES.map((notice) => (
-          <NoticeItem key={notice.id} notice={notice} />
+      <List>
+        {notices.map((notice, index) => (
+          <ListItem key={index}>
+            <Typography>{notice}</Typography>
+          </ListItem>
         ))}
-      </Box>
-    </Container>
+      </List>
+      {canPostNotices && (
+        <Box sx={{ mt: 2 }}>
+          <TextField
+            label="New Notice"
+            value={newNotice}
+            onChange={(e) => setNewNotice(e.target.value)}
+            fullWidth
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handlePostNotice}
+            sx={{ mt: 1 }}
+          >
+            Post Notice
+          </Button>
+        </Box>
+      )}
+    </Box>
   );
-};
-
-export default NoticeBoard;
+}
