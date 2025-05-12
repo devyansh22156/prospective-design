@@ -1,5 +1,5 @@
 import { Card, CardContent, Typography, Box, Chip, Avatar } from '@mui/material';
-import type { Notice } from '../types';
+import type { Notice } from '../types/user';
 import { format } from 'date-fns';
 
 interface NoticeItemProps {
@@ -34,7 +34,7 @@ const NoticeItem = ({ notice }: NoticeItemProps) => {
             {notice.author[0]}
           </Avatar>
           <Box>
-            <Typography variant="h6" component="div" sx={{ fontWeight: 500 }}>
+            <Typography variant="h6" component="div">
               {notice.title}
             </Typography>
             <Typography variant="caption" color="text.secondary">
@@ -47,18 +47,9 @@ const NoticeItem = ({ notice }: NoticeItemProps) => {
         </Typography>
         <Box sx={{ display: 'flex', gap: 1 }}>
           <Chip 
-            label="Company Notice" 
-            size="small" 
-            sx={{ 
-              bgcolor: 'primary.light',
-              color: 'primary.contrastText',
-            }} 
-          />
-          <Chip 
-            label={notice.author} 
+            label={notice.priority || 'Normal'} 
             size="small"
-            variant="outlined"
-            sx={{ borderColor: 'primary.light' }}
+            color="primary"
           />
         </Box>
       </CardContent>

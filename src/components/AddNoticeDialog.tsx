@@ -8,14 +8,19 @@ import {
   Button,
   Box,
   Alert,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from '@mui/material';
 import type { Notice } from '../types';
+import type { User } from '../types';
 
 interface AddNoticeDialogProps {
   open: boolean;
   onClose: () => void;
   onSubmit: (notice: Omit<Notice, 'id' | 'date'>) => void;
-  currentUser: { name: string; role: string; } | null;
+  currentUser: User;
 }
 
 export default function AddNoticeDialog({ 
@@ -26,6 +31,7 @@ export default function AddNoticeDialog({
 }: AddNoticeDialogProps) {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [priority, setPriority] = useState<Notice['priority']>('normal');
   const [error, setError] = useState('');
 
   const handleSubmit = () => {
@@ -37,12 +43,14 @@ export default function AddNoticeDialog({
     onSubmit({
       title: title.trim(),
       content: content.trim(),
-      author: `${currentUser?.name} (${currentUser?.role})`
+      author: `${currentUser.name} (${currentUser.role})`,
+      priority
     });
 
     // Reset form
     setTitle('');
     setContent('');
+    setPriority('normal');
     setError('');
     onClose();
   };
@@ -73,6 +81,18 @@ export default function AddNoticeDialog({
             fullWidth
             required
           />
+          <FormControl fullWidth>
+            <InputLabel>Priority</InputLabel>
+            <Select
+              value={priority}
+              label="Priority"
+              onChange={(e) => setPriority(e.target.value as Notice['priority'])}
+            >
+              <MenuItem value="low">Low</MenuItem>
+              <MenuItem value="normal">Normal</MenuItem>
+              <MenuItem value="high">High</MenuItem>
+            </Select>
+          </FormControl>
         </Box>
       </DialogContent>
       <DialogActions>

@@ -1,13 +1,16 @@
 export interface User {
-  id: number;
+  id: string;  // Changed from number to string to match implementation
   username: string;
   name: string;
-  role: 'ADMIN' | 'HR' | 'EMPLOYEE';
   email: string;
-  avatar?: string;
+  role: 'ADMIN' | 'HR' | 'EMPLOYEE';  // Removed 'Management' as it's not in the allowed roles
 }
 
-export interface AuthState {
-  isAuthenticated: boolean;
-  user: User | null;
+export interface Notice {
+  id: number;
+  title: string;
+  content: string;
+  date: string;
+  author: string;
+  priority?: 'low' | 'normal' | 'high';
 }
